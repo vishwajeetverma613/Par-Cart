@@ -4,9 +4,9 @@ from faker import Faker
 
 # Database Configuration (Update these details)
 DB_CONFIG = {
-    "host": "database-1.cluster-cngmgcuearcw.ap-south-1.rds.amazonaws.com",
-    "user": "admin",
-    "password": "vynzoEAG6Cl7Qawoh8vW",
+    "host": "<db_name>",
+    "user": "<db_user>",
+    "password": "<db_pass>",
     "database": "ecommerce",
     "port": 3306  # Change if using a non-default MySQL port
 }

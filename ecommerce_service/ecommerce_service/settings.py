@@ -144,4 +144,4 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 
-CELERY_BROKER_URL = f'amqp://{env('CELERY_USER')}:{env('CELERY_PASSWORD')}@localhost:5672/'
+CELERY_BROKER_URL = f'amqp://{env("CELERY_USER")}:{env("CELERY_PASSWORD")}@localhost:5672/'
