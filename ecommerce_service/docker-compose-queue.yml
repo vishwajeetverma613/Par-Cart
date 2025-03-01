@@ -5,7 +5,7 @@ services:
   celery:
     build: .
     container_name: celery_worker
-    command: celery -A ecommerce_service worker --loglevel=info
+    command: sh -c "DJANGO_SETTINGS_MODULE=ecommerce_service.settings celery -A ecommerce_service worker --loglevel=info"
     volumes:
       - .:/app
     env_file:
