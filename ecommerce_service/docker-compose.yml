@@ -12,7 +12,7 @@ services:
       - "8000:8000"
     volumes:
       - .:/app
-      - ./logs/:/home/admin/logs/
+      - /home/admin/logs/:/app/logs/
     command: >
       sh -c "python manage.py runserver 0.0.0.0:8000"
     network_mode: "host"

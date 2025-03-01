@@ -15,14 +15,15 @@ class AccessLogMiddleware:
             req_body = {str(e)}
 
         response = self.get_response(request)
+
+        if "/api/" in request.path: 
+            log_data = {
+                "request_path": request.path,
+                "request_body": req_body,
+                "response_body": response.content.decode('utf-8') if hasattr(response, 'content') else None,
+                "status_code": response.status_code,
+            }
         
-        log_data = {
-            "request_path": request.path,
-            "request_body": req_body,
-            "response_body": response.content.decode('utf-8') if hasattr(response, 'content') else None,
-            "status_code": response.status_code,
-        }
-        
-        access_logger.info(log_data)
+            access_logger.info(log_data)
         
         return response
