@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  
+  celery:
+    build: .
+    container_name: celery_worker
+    command: celery -A ecommerce_service worker --loglevel=info
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+   
+
+  

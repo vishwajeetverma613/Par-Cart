@@ -8,17 +8,14 @@ class PaymentMethod(Enum):
 
     @classmethod
     def choices(cls):
-        return [(key.value, key.name) for key in cls]
+        return [(key.value, key.value) for key in cls]
 
 
 class OrderStatus(Enum):
     PENDING = "Pending"
-    RECIEVED = "Recieved"
     PROCESSING = "Processing"
-    SHIPPED = "Shipped"
-    DELIVERED = "Delivered"
-    CANCELED = "Canceled"
+    COMPLETED = "Completed"
 
     @classmethod
     def choices(cls):
-        return [(key.value, key.name) for key in cls]
+        return [(key.value, key.value) for key in cls]
