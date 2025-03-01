@@ -37,7 +37,7 @@ class OrderCreateAPIView(APIView):
                 order_items = []
 
                 for item in items:
-                    product = Product.objects.select_for_update().get(id=item["product_id"])
+                    product = Product.objects.get(id=item["product_id"])
 
                     
 
@@ -90,7 +90,7 @@ class OrderMetricsAPIView(APIView):
 
     def get(self, request):
         total_orders = Order.objects.count()
-        avg_processing_time = Order.objects.filter(status=OrderStatus.COMPLETED).annotate(
+        avg_processing_time = Order.objects.filter(status=OrderStatus.COMPLETED.value).annotate(
             processing_duration=ExpressionWrapper(F('processed_at') - F('created_at'), output_field=DurationField())
         ).aggregate(avg_duration=Avg('processing_duration'))['avg_duration']
         order_status_counts = Order.objects.values('status').annotate(count=Count('status'))
@@ -99,5 +99,5 @@ class OrderMetricsAPIView(APIView):
         return Response({
             "total_orders": total_orders,
             "orders_by_status": status_count_dict,
-            "avg_processing_time": avg_processing_time
+            "avg_processing_time": avg_processing_time.total_seconds()
         }, status=status.HTTP_200_OK)
