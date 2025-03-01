@@ -72,6 +72,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'ecommerce_service.middleware.AccessLogMiddleware'
 ]
 
 ROOT_URLCONF = 'ecommerce_service.urls'
@@ -145,3 +146,48 @@ CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 
 CELERY_BROKER_URL = f'amqp://{env("CELERY_USER")}:{env("CELERY_PASSWORD")}@localhost:5672/'
+
+
+import os
+import logging
+from common.utils import CustomJSONFormatter
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'json': {
+            '()': CustomJSONFormatter,
+        },
+    },
+    'handlers': {
+        'file_access': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs', 'access.log'),
+            'formatter': 'json',
+        },
+        'file_console': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs', 'console.log'),
+            'formatter': 'json',
+        },
+    },
+    'loggers': {
+        'access': {
+            'handlers': ['file_access'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        'console': {
+            'handlers': ['file_console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+    },
+}
+
+

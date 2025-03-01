@@ -14,7 +14,10 @@ from rest_framework import status
 from order.models import Order
 from common.enums import OrderStatus
 from django.db.models import Avg, F, ExpressionWrapper, DurationField
+import logging
+import json
 
+console_logger = logging.getLogger('console')
 
 class OrderCreateAPIView(APIView):
     """
@@ -51,17 +54,21 @@ class OrderCreateAPIView(APIView):
                 order.save()
 
                 # Push order to Celery queue
+                console_logger.info({"message": f"sucessfully Created Order with order ID => {order.id}"})
                 process_order_task.delay(order.id)
 
                 return Response({"order_id": order.id, "status": order.status}, status=status.HTTP_201_CREATED)
 
         except Customer.DoesNotExist:
+            console_logger.error({"message":  "Invalid customer ID", "meta": {"request": json.dumps(request.data)}})
             return Response({"error": "Invalid customer ID"}, status=status.HTTP_400_BAD_REQUEST)
         except Product.DoesNotExist:
+            console_logger.error({"message":  "Invalid product ID", "meta": {"request": json.dumps(request.data)}})
             return Response({"error": "Invalid product ID"}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             import traceback
             traceback.print_exc()
+            console_logger.error({"message":  f"An error Occurred {str(e)} => {e.__traceback__}", "meta": {"request": json.dumps(request.data)}})
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
@@ -77,6 +84,7 @@ class OrderStatusAPIView(APIView):
             serializer = OrderSerializer(order)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Order.DoesNotExist:
+            console_logger.info({"message": f"Order with order ID => {order_id} not Found"})
             return Response({"error": "Order not found"}, status=status.HTTP_404_NOT_FOUND)
 
 
