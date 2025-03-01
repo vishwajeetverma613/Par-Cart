@@ -1,0 +1,124 @@
+openapi: 3.0.0
+info:
+  title: E-Commerce Backend API
+  version: "1.0.0"
+  description: >
+       This API manages orders, products, and customers for the e-commerce backend system.
+paths:
+  /api/v1/metrics/:
+    get:
+      summary: Retrieve order metrics
+      description: Get total orders, average processing time, and status counts.
+      responses:
+        '200':
+          description: Metrics retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_orders:
+                    type: integer
+                  average_processing_time:
+                    type: string
+                  orders_by_status:
+                    type: object
+                    additionalProperties:
+                      type: integer
+
+  /api/v1/orders/:
+    post:
+      summary: Create a new order
+      description: Create a new order for a given customer with specified items.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                customer_id:
+                  type: integer
+                items:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      product_id:
+                        type: integer
+                      quantity:
+                        type: integer
+      responses:
+        '201':
+          description: Order created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  order_id:
+                    type: integer
+                  status:
+                    type: string
+
+  /api/v1/orders/{id}/:
+    get:
+      summary: Retrieve order details
+      description: Get the details of an existing order by its ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Order details retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  customer:
+                    type: integer
+                  total_amount:
+                    type: number
+                    format: float
+                  status:
+                    type: string
+                  created_at:
+                    type: string
+                    format: date-time
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        product__name:
+                          type: string
+                        quantity:
+                          type: integer
+                        price:
+                          type: number
+                          format: float
+        '404':
+          description: Order not found
+
+  /api/v1/simulate-load/:
+    post:
+      summary: Simulate Load to Create a new orders
+      description: Simulates Load to create 1000 Orders concurrently
+      responses:
+        '200':
+          description: Load Simulated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+
+

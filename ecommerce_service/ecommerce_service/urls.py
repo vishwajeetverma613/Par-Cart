@@ -17,8 +17,19 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from order.urls import urlpatterns as order_urls
+from django.views.generic import TemplateView
+
+from django.shortcuts import redirect
+from django.urls import path
+
+def redirect_to_admin(request):
+    return redirect("/admin/")
+
 
 urlpatterns = [
+    path("", redirect_to_admin),  # Redirect root API calls to /admin/
     path('admin/', admin.site.urls),
-    path('api/v1/', include(order_urls))
+    path('api/v1/', include(order_urls)),
+    path('swagger/', TemplateView.as_view(template_name='swagger.html'), name='swagger-ui'),
+
 ]

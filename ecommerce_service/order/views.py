@@ -16,14 +16,20 @@ from common.enums import OrderStatus
 from django.db.models import Avg, F, ExpressionWrapper, DurationField
 import logging
 import json
+from scripts.simulate_orders import simulate_orders
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+
+
 
 console_logger = logging.getLogger('console')
 
+
+@method_decorator(csrf_exempt, name="dispatch")
 class OrderCreateAPIView(APIView):
     """
     API to create an order.
     """
-
     def post(self, request):
         serializer = OrderCreateSerializer(data=request.data)
         if not serializer.is_valid():
@@ -109,3 +115,18 @@ class OrderMetricsAPIView(APIView):
             "orders_by_status": status_count_dict,
             "avg_processing_time": avg_processing_time.total_seconds()
         }, status=status.HTTP_200_OK)
+    
+
+
+# views.py
+from django.http import JsonResponse
+
+@csrf_exempt
+def run_script_view(request):
+    if request.method == 'POST':
+        # Your Python logic here
+        import threading
+        threading.Thread(target=simulate_orders).start()
+        result = "Load Simulation started. Please go to Rabbitmq portal to see the load."
+        return JsonResponse({'result': result})
+    return JsonResponse({'error': 'Invalid request'}, status=400)
