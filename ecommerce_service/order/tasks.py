@@ -23,7 +23,7 @@ def process_order_task(order_id):
             order.save()
 
             # Simulating random order processing time (between 3 to 10 seconds)
-            sleep_time = random.uniform(3, 10)
+            sleep_time = random.uniform(3, 5)
             time.sleep(sleep_time)
 
             order.status = OrderStatus.COMPLETED.value

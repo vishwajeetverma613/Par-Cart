@@ -44,8 +44,6 @@ class OrderCreateAPIView(APIView):
                     price = product.price * item["quantity"]
                     order_items.append(OrderItem(order=order, product=product, quantity=item["quantity"], price=price))
 
-                    product.save()
-
                     total_price += price
 
                 OrderItem.objects.bulk_create(order_items)
@@ -62,6 +60,8 @@ class OrderCreateAPIView(APIView):
         except Product.DoesNotExist:
             return Response({"error": "Invalid product ID"}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
+            import traceback
+            traceback.print_exc()
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
