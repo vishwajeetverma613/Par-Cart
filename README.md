@@ -5,7 +5,7 @@ This **E-Commerce Backend System** is a **high-performance, scalable, and modula
 
 🔹 **Key Highlights:**
 - **Microservices-Oriented Architecture** for better modularity and scalability.
-- **Advanced Logging & Monitoring** with **ELK Stack, Prometheus, and Grafana**.
+- **Advanced Logging & Monitoring** with **ELK Stack**.
 - **Asynchronous Processing** powered by **RabbitMQ and Celery**.
 - **Containerized Deployment** using **Docker & Docker Compose**.
 - **Cloud-Native Infrastructure** hosted on **AWS**.
@@ -41,7 +41,6 @@ The backend is structured into distinct Django apps, ensuring modularity and eas
 - **Filebeat** → Collects and streams logs from microservices.
 
 ### **2️⃣ Metrics & Performance Monitoring**
-- **Prometheus & Grafana** → Monitor real-time metrics and system health.
 - **RabbitMQ Monitoring** → Tracks queue performance and bottlenecks.
 
 ---
@@ -72,7 +71,7 @@ The API is designed following **RESTful best practices**, ensuring **scalability
 
 ### **1️⃣ Clone the Repository**
 ```bash
-git clone https://github.com/your-repo/ecommerce-backend.git
+git clone https://github.com/vishwajeetverma613/Par-Cart/tree/dev-vv
 git fetch --all
 git checkout dev-vv
 cd ecommerce-backend
@@ -156,3 +155,6 @@ output {
 ## 🎯 Final Thoughts
 The **E-Commerce Backend System** is built for performance, scalability, and real-time monitoring. With a microservices-based architecture, robust logging, and containerized deployment, this solution is designed to handle high traffic, ensuring a seamless shopping experience for users. 🚀
 
+🔹 GitHub Repository & Deployment Details
+GitHub Repo: Par-Cart Backend
+Public API Endpoint: [http://13.201.1.102:8000/api/v1/]
